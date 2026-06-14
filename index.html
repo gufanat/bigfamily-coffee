@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кав'ярня BigFamily | Лендінг</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="container header-container">
+            <div class="logo">BigFamily</div>
+            <nav class="nav-links">
+                <a href="#about">Про нас</a>
+                <a href="#coffee">Кавова карта</a>
+                <a href="#desserts">Десерти</a>
+                <a href="#gallery">Родина</a>
+                <a href="#contacts">Контакти</a>
+            </nav>
+            <a href="#contacts" class="header-btn">Замовити столик</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container hero-content">
+            <h1>Кав'ярня BigFamily — місце, де смакує як удома</h1>
+            <p>Свіжообсмажена арабіка, авторські десерти та затишна атмосфера, в яку хочеться повертатися всією родиною.</p>
+            <a href="#coffee" class="hero-btn">Дивитися меню</a>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container about-wrapper">
+            <div class="about-text">
+                <h3>Трішки про нас</h3>
+                <p>BigFamily — це не просто про каву. Це про твої ранкові традиції, поспішні зустрічі з друзями за фільтр-кавою та затишні вечори з найближчими.</p>
+                <p>Ми любимо якісний продукт, тому працюємо виключно зі 100% арабікою свіжого обсмаження, а наше молоко завжди ідеально збите. Заходь у гості, ми вже готуємо твій улюблений напій!</p>
+            </div>
+            <div class="about-images">
+                <img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=600&q=80" alt="Кава">
+                <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=600&q=80" alt="Інтер'єр">
+            </div>
+        </div>
+    </section>
+
+    <section id="coffee">
+        <div class="container">
+            <h2 class="section-title">Наша кавова карта</h2>
+            <p class="section-subtitle">Класика та авторські експерименти</p>
+            
+            <div class="menu-tabs">
+                <button class="tab-btn active" data-target="all">Усе меню</button>
+                <button class="tab-btn" data-target="classic">Класика</button>
+                <button class="tab-btn" data-target="author">Авторські</button>
+                <button class="tab-btn" data-target="alternative">Альтернатива</button>
+            </div>
+            
+            <div class="menu-grid">
+                <div class="menu-item" data-category="classic">
+                    <div class="item-details">
+                        <h4>Еспресо</h4>
+                        <p>Подвійний шот бадьорості, 100% арабіка</p>
+                    </div>
+                    <div class="item-price">45 грн</div>
+                </div>
+                <div class="menu-item" data-category="classic">
+                    <div class="item-details">
+                        <h4>Капучино</h4>
+                        <p>Ідеальний баланс кави та пишної молочної пінки</p>
+                    </div>
+                    <div class="item-price">60 грн</div>
+                </div>
+                <div class="menu-item" data-category="classic">
+                    <div class="item-details">
+                        <h4>Лате</h4>
+                        <p>Багато ніжного молока та м'який кавовий смак</p>
+                    </div>
+                    <div class="item-price">65 грн</div>
+                </div>
+                <div class="menu-item" data-category="classic">
+                    <div class="item-details">
+                        <h4>Флет Вайт</h4>
+                        <p>Для тих, хто любить міцніший кавовий смак з молоком</p>
+                    </div>
+                    <div class="item-price">75 грн</div>
+                </div>
+
+                <div class="menu-item" data-category="alternative">
+                    <div class="item-details">
+                        <h4>Фільтр-кава</h4>
+                        <p>Свіжий батч-брю, сорт зерна змінюємо щодня</p>
+                    </div>
+                    <div class="item-price">55 грн</div>
+                </div>
+
+                <div class="menu-item" data-category="author">
+                    <div class="item-details">
+                        <h4>Фірмовий Синє Кокосове Сяйво</h4>
+                        <p>Авторський лате з кокосовим молоком та секретним сиропом</p>
+                    </div>
+                    <div class="item-price">90 грн</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="desserts" class="desserts">
+        <div class="container">
+            <h2 class="section-title">Солодкі моменти</h2>
+            <p class="section-subtitle">Готуємо щоранку з любов'ю</p>
+
+            <div class="dessert-grid">
+                <div class="dessert-card">
+                    <img src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=500&q=80" alt="Чизкейк">
+                    <div class="dessert-info">
+                        <h4>Чизкейк Нью-Йорк</h4>
+                        <p>Класичний запечений сирний десерт на пісочній основі.</p>
+                        <div class="dessert-footer">
+                            <span>150г</span>
+                            <span>85 грн</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="dessert-card">
+                    <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=500&q=80" alt="Шоколадний торт">
+                    <div class="dessert-info">
+                        <h4>Шоколадний Трюфель</h4>
+                        <p>Насичений шоколадний бісквіт із ніжним мусовим кремом.</p>
+                        <div class="dessert-footer">
+                            <span>130г</span>
+                            <span>95 грн</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="dessert-card">
+                    <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=500&q=80" alt="Пончики">
+                    <div class="dessert-info">
+                        <h4>Фірмовий Донат</h4>
+                        <p>Духмяний пончик із полуничною глазур'ю та декором.</p>
+                        <div class="dessert-footer">
+                            <span>90г</span>
+                            <span>50 грн</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="dessert-card">
+                    <img src="https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=500&q=80" alt="Круасан">
+                    <div class="dessert-info">
+                        <h4>Круасан з мигдалем</h4>
+                        <p>Класичний французький круасан із мигдалевим франжипаном.</p>
+                        <div class="dessert-footer">
+                            <span>120г</span>
+                            <span>70 грн</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" class="gallery">
+        <div class="container">
+            <h2 class="section-title">Наша Родина</h2>
+            <p class="section-subtitle">Щасливі моменти наших гостей</p>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=500&q=80" alt="Атмосфера">
+                    <div class="gallery-overlay">Теплі зустрічі</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1543007630-9710e4a00a20?auto=format&fit=crop&w=500&q=80" alt="Робота бариста">
+                    <div class="gallery-overlay">Професійне заварювання</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=500&q=80" alt="Кава з собою">
+                    <div class="gallery-overlay">Твоя ранкова кава</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=500&q=80" alt="Друзі у кав'ярні">
+                    <div class="gallery-overlay">Затишні вечори</div>
+                </div>
+            </div>
+            <p class="gallery-note">Діліться своїми фото в Instagram з тегом #BigFamilyCoffee</p>
+        </div>
+    </section>
+
+    <footer id="contacts">
+        <div class="container footer-wrapper">
+            <div class="footer-info">
+                <h3>Завітайте в гості</h3>
+                <p><strong>Адреса:</strong> вул. Гожулівська, 26, Полтава, Полтавська область, 36000</p>
+                <p><strong>Графік роботи:</strong> Щодня з 08:00 до 21:00</p>
+                <p><strong>Телефон:</strong> +38 (044) 123-45-67</p>
+                <p><strong>Email:</strong> hello@bigfamily.coffee</p>
+            </div>
+            <div class="footer-map">
+                <iframe src="https://maps.google.com/maps?q=49.603224073744336,34.485925682613534&hl=uk&z=17&output=embed" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Кав'ярня BigFamily. Усі права захищені.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
