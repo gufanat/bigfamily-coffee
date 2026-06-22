@@ -46,10 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // 3. ПЛАВНА ЯКІРНА НАВІГАЦІЯ
+    // 3. ПЛАВНИЙ СКРОЛ ДО РОЗДІЛІВ (Оновлено відступи)
     // ==========================================
-    const links = document.querySelectorAll('a[href^="#"]');
-    
+    const links = document.querySelectorAll('.nav-links a, .hero-btn');
     links.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
@@ -58,7 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (targetSection) {
                 const headerHeight = header.offsetHeight;
-                const targetPosition = targetSection.getBoundingClientRect().top + window.scrollY - headerHeight;
+                // Для контактів (футера) робимо більший додатковий відступ (45px), щоб секцію було повністю видно
+                const extraOffset = targetId === '#contacts' ? 45 : 20;
+                const targetPosition = targetSection.getBoundingClientRect().top + window.scrollY - headerHeight - extraOffset;
 
                 window.scrollTo({
                     top: targetPosition,
@@ -95,4 +96,75 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const animatedSections = document.querySelectorAll('.fade-in-section');
     animatedSections.forEach(section => observer.observe(section));
+
+    // ==========================================
+    // 5. ЛОГІКА МОДАЛЬНОГО ВІКНА ТА МАСКА ТЕЛЕФОНУ
+    // ==========================================
+    const modal = document.getElementById('booking-modal');
+    const openModalBtns = document.querySelectorAll('.open-booking-btn');
+    const closeModalBtn = document.querySelector('.close-modal');
+    const bookingForm = document.getElementById('booking-form');
+    const phoneInput = document.getElementById('booking-phone');
+    const phoneGroup = phoneInput.parentElement;
+
+    // Відкриття вікна
+    openModalBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden'; // Блокуємо скрол фону сторінки
+        });
+    });
+
+    // Функція закриття вікна
+    const closeModal = () => {
+        modal.classList.remove('show');
+        document.body.style.overflow = ''; // Повертаємо скрол сторінки
+        bookingForm.reset();
+        phoneGroup.classList.remove('invalid');
+    };
+
+    closeModalBtn.addEventListener('click', closeModal);
+    
+    // Закриття при кліку поза межами форми (на темний фон)
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+
+    // Строга інтелектуальна маска для введення телефону: +38 (0XX) XXX-XX-XX
+    phoneInput.addEventListener('input', function (e) {
+        let matrix = "+38 (0__) ___-__-__",
+            i = 0,
+            def = matrix.replace(/\D/g, ""),
+            val = this.value.replace(/\D/g, "");
+        
+        if (def.length >= val.length) val = def;
+        
+        this.value = matrix.replace(/./g, function(a) {
+            return /[_\d]/.test(a) && i < val.length ? val.charAt(i++) : i >= val.length ? "" : a;
+        });
+    });
+
+    // Автоматична підказка-префікс при фокусі на поле
+    phoneInput.addEventListener('focus', function () {
+        if (this.value === "") {
+            this.value = "+38 (0";
+        }
+    });
+
+    // Валідація форми перед відправкою
+    bookingForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        // Повна довжина рядка з маскою має становити рівно 19 символів
+        if (phoneInput.value.length < 19) {
+            phoneGroup.classList.add('invalid');
+            phoneInput.focus();
+        } else {
+            phoneGroup.classList.remove('invalid');
+            
+            alert(`Дякуємо, ${document.getElementById('booking-name').value}! Ваш столик успішно заброньовано. Очікуйте на дзвінок-підтвердження.`);
+            closeModal();
+        }
+    });
 });
