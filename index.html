@@ -11,14 +11,25 @@
     <header>
         <div class="container header-container">
             <div class="logo">BigFamily</div>
-            <nav class="nav-links">
-                <a href="#about">Про нас</a>
-                <a href="#coffee">Кавова карта</a>
-                <a href="#desserts">Десерти</a>
-                <a href="#gallery">Родина</a>
-                <a href="#contacts">Контакти</a>
+            
+            <nav class="nav-links" id="nav-menu">
+                <a href="#about" class="nav-link-item">Про нас</a>
+                <a href="#coffee" class="nav-link-item">Кавова карта</a>
+                <a href="#desserts" class="nav-link-item">Десерти</a>
+                <a href="#gallery" class="nav-link-item">Родина</a>
+                <a href="#contacts" class="nav-link-item">Контакти</a>
+                <!-- Кнопка всередині меню для мобільних -->
+                <a href="#" class="header-btn mobile-nav-btn open-booking-btn">Замовити столик</a>
             </nav>
-            <a href="#" class="header-btn open-booking-btn">Замовити столик</a>
+            
+            <div class="header-actions">
+                <a href="#" class="header-btn desktop-nav-btn open-booking-btn">Замовити столик</a>
+                <div class="menu-toggle" id="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -49,11 +60,13 @@
             <h2 class="section-title">Наша кавова карта</h2>
             <p class="section-subtitle">Класика та авторські експерименти</p>
             
-            <div class="menu-tabs">
-                <button class="tab-btn active" data-target="all">Усе меню</button>
-                <button class="tab-btn" data-target="classic">Класика</button>
-                <button class="tab-btn" data-target="author">Авторські</button>
-                <button class="tab-btn" data-target="alternative">Альтернатива</button>
+            <div class="menu-tabs-wrapper">
+                <div class="menu-tabs">
+                    <button class="tab-btn active" data-target="all">Усе меню</button>
+                    <button class="tab-btn" data-target="classic">Класика</button>
+                    <button class="tab-btn" data-target="author">Авторські</button>
+                    <button class="tab-btn" data-target="alternative">Альтернатива</button>
+                </div>
             </div>
             
             <div class="menu-grid">
@@ -207,7 +220,7 @@
     <!-- Модальне вікно замовлення столика -->
     <div id="booking-modal" class="modal">
         <div class="modal-content">
-            <span class="close-modal">&times;</span>
+            <span class="close-modal">×</span>
             <h2>Бронювання столика</h2>
             <p class="modal-subtitle">Заповніть форму, і ми підтвердимо ваше бронювання</p>
             

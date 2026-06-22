@@ -16,6 +16,11 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+html, body {
+    overflow-x: hidden; /* Захист від горизонтального скролу на мобільних */
+    width: 100%;
+}
+
 body {
     background-color: var(--bg-creamy);
     color: var(--text-dark);
@@ -85,30 +90,81 @@ header {
 .nav-links {
     display: flex;
     gap: 30px;
+    align-items: center;
 }
 
-.nav-links a {
+.nav-links a.nav-link-item {
     font-weight: 500;
     transition: color 0.3s;
+    position: relative;
 }
 
-.nav-links a:hover {
+.nav-links a.nav-link-item:hover {
     color: var(--coffee-medium);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
 .header-btn {
     background-color: var(--coffee-dark);
     color: var(--white);
-    padding: 10px 20px;
+    padding: 10px 22px;
     border-radius: 25px;
-    font-size: 0.9rem;
-    transition: background 0.3s;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: background 0.3s, transform 0.2s;
     cursor: pointer;
+    border: none;
+    text-align: center;
 }
 
 .header-btn:hover {
     background-color: #553c31;
+    transform: translateY(-1px);
 }
+
+.mobile-nav-btn {
+    display: none; /* За замовчуванням прихована, показується в мобільному меню */
+}
+
+/* Кнопка гамбургера */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    cursor: pointer;
+    z-index: 1010;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: var(--coffee-dark);
+    border-radius: 3px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Анімація гамбургера в стан Х */
+.menu-toggle.open span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+}
+
+.menu-toggle.open span:nth-child(2) {
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+.menu-toggle.open span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+}
+
 
 /* 2. ПЕРШИЙ ЕКРАН */
 .hero {
@@ -121,10 +177,15 @@ header {
     padding-top: 80px;
 }
 
+.hero-content {
+    padding: 0 10px;
+}
+
 .hero-content h1 {
     font-size: 3.5rem;
     margin-bottom: 20px;
     font-weight: 800;
+    letter-spacing: -0.5px;
 }
 
 .hero-content p {
@@ -143,12 +204,14 @@ header {
     font-weight: bold;
     font-size: 1.1rem;
     transition: transform 0.3s, background 0.3s;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
 }
 
 .hero-btn:hover {
     transform: translateY(-3px);
     background-color: var(--white);
 }
+
 
 /* 3. ПРО НАС */
 .about {
@@ -186,30 +249,50 @@ header {
 
 .about-images img {
     width: 100%;
-    height: 200px;
+    height: 240px;
     object-fit: cover;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
+
 /* 4. КАВОВА КАРТА ТА ТАБИ */
+.menu-tabs-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 40px;
+    padding-bottom: 5px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.menu-tabs-wrapper::-webkit-scrollbar {
+    height: 4px;
+}
+.menu-tabs-wrapper::-webkit-scrollbar-thumb {
+    background-color: var(--coffee-light);
+    border-radius: 2px;
+}
+
 .menu-tabs {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    margin-bottom: 40px;
+    gap: 12px;
+    min-width: max-content;
+    margin: 0 auto;
+    padding: 0 10px;
 }
 
 .tab-btn {
     background-color: var(--bg-warm);
     color: var(--coffee-dark);
     border: none;
-    padding: 10px 25px;
-    font-size: 1rem;
+    padding: 10px 24px;
+    font-size: 0.95rem;
     font-weight: 600;
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
+    white-space: nowrap;
 }
 
 .tab-btn:hover, .tab-btn.active {
@@ -221,13 +304,12 @@ header {
 .menu-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 30px;
-    margin-top: 20px;
+    gap: 25px;
 }
 
 .menu-item {
     background: var(--white);
-    padding: 25px;
+    padding: 22px;
     border-radius: 15px;
     display: flex;
     justify-content: space-between;
@@ -243,22 +325,24 @@ header {
 }
 
 .item-details h4 {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     color: var(--coffee-dark);
     margin-bottom: 5px;
 }
 
 .item-details p {
     color: #777;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    padding-right: 10px;
 }
 
 .item-price {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     font-weight: bold;
     color: var(--coffee-dark);
     white-space: nowrap;
 }
+
 
 /* 5. МЕНЮ ДЕСЕРТІВ */
 .desserts {
@@ -316,6 +400,7 @@ header {
     color: var(--coffee-dark);
 }
 
+
 /* 6. ГАЛЕРЕЯ З КЛІЄНТАМИ */
 .gallery-grid {
     display: grid;
@@ -351,6 +436,8 @@ header {
     font-weight: 500;
     opacity: 0;
     transition: opacity 0.3s;
+    padding: 10px;
+    text-align: center;
 }
 
 .gallery-item:hover img {
@@ -368,6 +455,7 @@ header {
     color: var(--coffee-dark);
     font-weight: 500;
 }
+
 
 /* 7. КОНТАКТИ ТА ФУТЕР */
 footer {
@@ -399,10 +487,11 @@ footer {
 
 .footer-map {
     flex: 1;
-    height: 250px;
+    height: 280px;
     border-radius: 15px;
     overflow: hidden;
     background: #eee;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 .footer-bottom {
@@ -413,7 +502,7 @@ footer {
     opacity: 0.6;
 }
 
-/* Класи для ефекту плавної появи при скролі */
+/* Ефекти скролу */
 .fade-in-section {
     opacity: 0;
     transform: translateY(30px);
@@ -427,40 +516,115 @@ footer {
     visibility: visible;
 }
 
-/* АДАПТИВНІСТЬ ДЛЯ МОБІЛЬНИХ ПРИСТРОЇВ */
-@media (max-width: 992px) {
-    .dessert-grid, .gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 768px) {
-    .nav-links, .header-btn {
-        display: none;
-    }
-    .about-wrapper, .footer-wrapper {
-        flex-direction: column;
-    }
-    .menu-grid {
-        grid-template-columns: 1fr;
-    }
-    .hero-content h1 {
-        font-size: 2.3rem;
-    }
-}
 
 /* ========================================== */
-/* 8. МОДАЛЬНЕ ВІКНО БРОНЮВАННЯ */
+/* 8. АДАПТИВНІСТЬ (ПОВНА МОБІЛЬНА ОПТИМІЗАЦІЯ) */
+/* ========================================== */
+
+/* Планшети та малі нетбуки */
+@media (max-width: 992px) {
+    .section-title { font-size: 2.2rem; }
+    .about-wrapper { gap: 30px; }
+    .dessert-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Смартфони (Горизонтальні та вертикальні режими) */
+@media (max-width: 768px) {
+    section { padding: 60px 0; }
+    .section-title { font-size: 1.9rem; }
+    
+    /* Трансформація шапки в мобільне висувне меню */
+    .menu-toggle {
+        display: flex; /* Показуємо гамбургер */
+    }
+    
+    .desktop-nav-btn {
+        display: none; /* Ховаємо десктопну кнопку */
+    }
+    
+    .mobile-nav-btn {
+        display: block; /* Показуємо всередині меню */
+        width: 100%;
+        margin-top: 15px;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%; /* Заховане праворуч за екраном */
+        width: 80%;
+        max-width: 320px;
+        height: 100vh;
+        background-color: var(--bg-creamy);
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding: 90px 40px 40px 40px;
+        gap: 25px;
+        box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+        transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        z-index: 1005;
+    }
+
+    .nav-links.active {
+        right: 0; /* Виїжджає на екран */
+    }
+
+    .nav-links a.nav-link-item {
+        font-size: 1.2rem;
+        width: 100%;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(133, 88, 111, 0.1);
+    }
+    
+    /* Решта адаптивів елементів сторінки */
+    .hero-content h1 { font-size: 2.4rem; }
+    .hero-content p { font-size: 1.1rem; margin-bottom: 30px; }
+    
+    .about-wrapper { flex-direction: column; text-align: center; }
+    .about-images { grid-template-columns: 1fr; width: 100%; gap: 15px; }
+    .about-images img { height: 200px; }
+    
+    .menu-grid { grid-template-columns: 1fr; gap: 15px; }
+    .menu-tabs { justify-content: flex-start; }
+    
+    .footer-wrapper { flex-direction: column; gap: 30px; }
+    .footer-map { height: 230px; }
+}
+
+/* Маленькі мобільні телефони (Екрани під 480px та менше) */
+@media (max-width: 480px) {
+    .hero-content h1 { font-size: 1.95rem; }
+    .hero-content p { font-size: 0.98rem; }
+    .hero-btn { padding: 12px 28px; font-size: 1rem; }
+    
+    .dessert-grid { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: 1fr; }
+    .gallery-item { height: 240px; }
+    
+    .modal-content {
+        padding: 25px 20px;
+    }
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+
+
+/* ========================================== */
+/* 9. МОДАЛЬНЕ ВІКНО БРОНЮВАННЯ */
 /* ========================================== */
 .modal {
     display: none;
     position: fixed;
-    z-index: 1000;
+    z-index: 2000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(44, 30, 23, 0.5);
+    background-color: rgba(44, 30, 23, 0.6);
     backdrop-filter: blur(4px);
     justify-content: center;
     align-items: center;
@@ -483,6 +647,8 @@ footer {
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
     transform: translateY(-30px);
     transition: transform 0.3s ease;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .modal.show .modal-content {
@@ -491,12 +657,13 @@ footer {
 
 .close-modal {
     position: absolute;
-    right: 25px;
-    top: 20px;
+    right: 22px;
+    top: 18px;
     font-size: 1.8rem;
     color: var(--coffee-dark);
     cursor: pointer;
     transition: color 0.2s;
+    line-height: 1;
 }
 
 .close-modal:hover {
@@ -506,12 +673,12 @@ footer {
 .modal h2 {
     color: var(--coffee-dark);
     margin-bottom: 5px;
-    font-size: 1.6rem;
+    font-size: 1.5rem;
 }
 
 .modal-subtitle {
     color: #7c6a5f;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     margin-bottom: 20px;
 }
 

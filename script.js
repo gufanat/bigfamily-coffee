@@ -19,7 +19,37 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // 2. ФІЛЬТРАЦІЯ КАВОВОЇ КАРТИ (ТАБИ)
+    // 2. МОБІЛЬНЕ МЕНЮ (БУРГЕР)
+    // ==========================================
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const navMenu = document.getElementById('nav-menu');
+    const navLinksList = document.querySelectorAll('.nav-link-item, .mobile-nav-btn');
+
+    const toggleMenu = () => {
+        mobileMenuBtn.classList.toggle('open');
+        navMenu.classList.toggle('active');
+        
+        // Блокуємо скрол основного екрана, коли меню відкрите
+        if (navMenu.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+    };
+
+    mobileMenuBtn.addEventListener('click', toggleMenu);
+
+    // Закриваємо меню при кліку на будь-яке посилання в ньому
+    navLinksList.forEach(link => {
+        link.addEventListener('click', () => {
+            if (navMenu.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+    });
+
+    // ==========================================
+    // 3. ФІЛЬТРАЦІЯ КАВОВОЇ КАРТИ (ТАБИ)
     // ==========================================
     const tabButtons = document.querySelectorAll('.tab-btn');
     const menuItems = document.querySelectorAll('.menu-item');
@@ -46,9 +76,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // 3. ПЛАВНИЙ СКРОЛ ДО РОЗДІЛІВ (Оновлено відступи)
+    // 4. ПЛАВНИЙ СКРОЛ ДО РОЗДІЛІВ З КОДУВАННЯМ ОФСЕТУ
     // ==========================================
-    const links = document.querySelectorAll('.nav-links a, .hero-btn');
+    const links = document.querySelectorAll('.nav-link-item, .hero-btn');
     links.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
@@ -57,7 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (targetSection) {
                 const headerHeight = header.offsetHeight;
-                // Для контактів (футера) робимо більший додатковий відступ (45px), щоб секцію було повністю видно
                 const extraOffset = targetId === '#contacts' ? 45 : 20;
                 const targetPosition = targetSection.getBoundingClientRect().top + window.scrollY - headerHeight - extraOffset;
 
@@ -70,19 +99,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // 4. ПЛАВНА ПОЯВА БЛОКІВ ПРИ СКРОЛІ (Fade-in)
+    // 5. ПЛАВНА ПОЯВА БЛОКІВ ПРИ СКРОЛІ (Fade-in)
     // ==========================================
     const sections = document.querySelectorAll('section');
-    
     sections.forEach((section, index) => {
-        if (index !== 0) { // Перший екран показуємо одразу
+        if (index !== 0) { 
             section.classList.add('fade-in-section');
         }
     });
 
     const observerOptions = {
         root: null,
-        threshold: 0.15
+        threshold: 0.12
     };
 
     const observer = new IntersectionObserver((entries, observer) => {
@@ -98,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
     animatedSections.forEach(section => observer.observe(section));
 
     // ==========================================
-    // 5. ЛОГІКА МОДАЛЬНОГО ВІКНА ТА МАСКА ТЕЛЕФОНУ
+    // 6. ЛОГІКА МОДАЛЬНОГО ВІКНО ТА МАСКА ТЕЛЕФОНУ
     // ==========================================
     const modal = document.getElementById('booking-modal');
     const openModalBtns = document.querySelectorAll('.open-booking-btn');
@@ -107,31 +135,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const phoneInput = document.getElementById('booking-phone');
     const phoneGroup = phoneInput.parentElement;
 
-    // Відкриття вікна
     openModalBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
             modal.classList.add('show');
-            document.body.style.overflow = 'hidden'; // Блокуємо скрол фону сторінки
+            document.body.style.overflow = 'hidden'; 
         });
     });
 
-    // Функція закриття вікна
     const closeModal = () => {
         modal.classList.remove('show');
-        document.body.style.overflow = ''; // Повертаємо скрол сторінки
+        // Повертаємо скрол тільки якщо мобільний бургер теж закритий
+        if (!navMenu.classList.contains('active')) {
+            document.body.style.overflow = '';
+        }
         bookingForm.reset();
         phoneGroup.classList.remove('invalid');
     };
 
     closeModalBtn.addEventListener('click', closeModal);
     
-    // Закриття при кліку поза межами форми (на темний фон)
     modal.addEventListener('click', (e) => {
         if (e.target === modal) closeModal();
     });
 
-    // Строга інтелектуальна маска для введення телефону: +38 (0XX) XXX-XX-XX
+    // Строга маска для введення телефону: +38 (0XX) XXX-XX-XX
     phoneInput.addEventListener('input', function (e) {
         let matrix = "+38 (0__) ___-__-__",
             i = 0,
@@ -145,25 +173,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Автоматична підказка-префікс при фокусі на поле
     phoneInput.addEventListener('focus', function () {
         if (this.value === "") {
             this.value = "+38 (0";
         }
     });
 
-    // Валідація форми перед відправкою
     bookingForm.addEventListener('submit', (e) => {
         e.preventDefault();
         
-        // Повна довжина рядка з маскою має становити рівно 19 символів
         if (phoneInput.value.length < 19) {
             phoneGroup.classList.add('invalid');
             phoneInput.focus();
         } else {
             phoneGroup.classList.remove('invalid');
-            
-            alert(`Дякуємо, ${document.getElementById('booking-name').value}! Ваш столик успішно заброньовано. Очікуйте на дзвінок-підтвердження.`);
+            alert(`Дякуємо, ${document.getElementById('booking-name').value}! Ваш столик успішно заброньовано. Очікуйте на дзвінок.`);
             closeModal();
         }
     });
