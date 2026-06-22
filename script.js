@@ -1,194 +1,192 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // ==========================================
-    // 1. АНІМАЦІЯ ШАПКИ ПРИ СКРОЛІ
-    // ==========================================
-    const header = document.querySelector('header');
-    const headerContainer = document.querySelector('.header-container');
-    
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            headerContainer.style.padding = '10px 0';
-            header.style.backgroundColor = 'rgba(253, 251, 247, 0.98)';
-            header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)';
-        } else {
-            headerContainer.style.padding = '20px 0';
-            header.style.backgroundColor = 'rgba(253, 251, 247, 0.95)';
-            header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.05)';
-        }
-    });
-
-    // ==========================================
-    // 2. МОБІЛЬНЕ МЕНЮ (БУРГЕР)
-    // ==========================================
+    const header = document.querySelector('.site-header');
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const navMenu = document.getElementById('nav-menu');
-    const navLinksList = document.querySelectorAll('.nav-link-item, .mobile-nav-btn');
-
-    const toggleMenu = () => {
-        mobileMenuBtn.classList.toggle('open');
-        navMenu.classList.toggle('active');
-        
-        // Блокуємо скрол основного екрана, коли меню відкрите
-        if (navMenu.classList.contains('active')) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = '';
-        }
-    };
-
-    mobileMenuBtn.addEventListener('click', toggleMenu);
-
-    // Закриваємо меню при кліку на будь-яке посилання в ньому
-    navLinksList.forEach(link => {
-        link.addEventListener('click', () => {
-            if (navMenu.classList.contains('active')) {
-                toggleMenu();
-            }
-        });
-    });
-
-    // ==========================================
-    // 3. ФІЛЬТРАЦІЯ КАВОВОЇ КАРТИ (ТАБИ)
-    // ==========================================
+    const navLinks = document.querySelectorAll('.nav-link-item');
     const tabButtons = document.querySelectorAll('.tab-btn');
     const menuItems = document.querySelectorAll('.menu-item');
-
-    tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-
-            const targetCategory = button.getAttribute('data-target');
-
-            menuItems.forEach(item => {
-                const itemCategory = item.getAttribute('data-category');
-                
-                if (targetCategory === 'all' || itemCategory === targetCategory) {
-                    item.style.display = 'flex';
-                    setTimeout(() => { item.style.opacity = '1'; }, 10);
-                } else {
-                    item.style.display = 'none';
-                    item.style.opacity = '0';
-                }
-            });
-        });
-    });
-
-    // ==========================================
-    // 4. ПЛАВНИЙ СКРОЛ ДО РОЗДІЛІВ З КОДУВАННЯМ ОФСЕТУ
-    // ==========================================
-    const links = document.querySelectorAll('.nav-link-item, .hero-btn');
-    links.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const targetId = link.getAttribute('href');
-            const targetSection = document.querySelector(targetId);
-            
-            if (targetSection) {
-                const headerHeight = header.offsetHeight;
-                const extraOffset = targetId === '#contacts' ? 45 : 20;
-                const targetPosition = targetSection.getBoundingClientRect().top + window.scrollY - headerHeight - extraOffset;
-
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-
-    // ==========================================
-    // 5. ПЛАВНА ПОЯВА БЛОКІВ ПРИ СКРОЛІ (Fade-in)
-    // ==========================================
-    const sections = document.querySelectorAll('section');
-    sections.forEach((section, index) => {
-        if (index !== 0) { 
-            section.classList.add('fade-in-section');
-        }
-    });
-
-    const observerOptions = {
-        root: null,
-        threshold: 0.12
-    };
-
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    const animatedSections = document.querySelectorAll('.fade-in-section');
-    animatedSections.forEach(section => observer.observe(section));
-
-    // ==========================================
-    // 6. ЛОГІКА МОДАЛЬНОГО ВІКНО ТА МАСКА ТЕЛЕФОНУ
-    // ==========================================
     const modal = document.getElementById('booking-modal');
     const openModalBtns = document.querySelectorAll('.open-booking-btn');
     const closeModalBtn = document.querySelector('.close-modal');
     const bookingForm = document.getElementById('booking-form');
     const phoneInput = document.getElementById('booking-phone');
-    const phoneGroup = phoneInput.parentElement;
+    const dateInput = document.getElementById('booking-date');
 
-    openModalBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            modal.classList.add('show');
-            document.body.style.overflow = 'hidden'; 
-        });
-    });
-
-    const closeModal = () => {
-        modal.classList.remove('show');
-        // Повертаємо скрол тільки якщо мобільний бургер теж закритий
-        if (!navMenu.classList.contains('active')) {
-            document.body.style.overflow = '';
-        }
-        bookingForm.reset();
-        phoneGroup.classList.remove('invalid');
+    const setBodyLock = (locked) => {
+        document.body.classList.toggle('locked', locked);
     };
 
-    closeModalBtn.addEventListener('click', closeModal);
-    
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) closeModal();
-    });
+    const closeMenu = () => {
+        if (!mobileMenuBtn || !navMenu) return;
+        mobileMenuBtn.classList.remove('open');
+        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        navMenu.classList.remove('active');
+        if (!modal?.classList.contains('show')) setBodyLock(false);
+    };
 
-    // Строга маска для введення телефону: +38 (0XX) XXX-XX-XX
-    phoneInput.addEventListener('input', function (e) {
-        let matrix = "+38 (0__) ___-__-__",
-            i = 0,
-            def = matrix.replace(/\D/g, ""),
-            val = this.value.replace(/\D/g, "");
-        
-        if (def.length >= val.length) val = def;
-        
-        this.value = matrix.replace(/./g, function(a) {
-            return /[_\d]/.test(a) && i < val.length ? val.charAt(i++) : i >= val.length ? "" : a;
+    const toggleMenu = () => {
+        if (!mobileMenuBtn || !navMenu) return;
+        const isOpen = !navMenu.classList.contains('active');
+        mobileMenuBtn.classList.toggle('open', isOpen);
+        mobileMenuBtn.setAttribute('aria-expanded', String(isOpen));
+        navMenu.classList.toggle('active', isOpen);
+        setBodyLock(isOpen || modal?.classList.contains('show'));
+    };
+
+    const updateHeader = () => {
+        header?.classList.toggle('scrolled', window.scrollY > 50);
+    };
+
+    const scrollToSection = (targetId) => {
+        const target = document.querySelector(targetId);
+        if (!target || !header) return;
+
+        const headerHeight = header.offsetHeight;
+        const extraOffset = targetId === '#contacts' ? 45 : 20;
+        const top = target.getBoundingClientRect().top + window.scrollY - headerHeight - extraOffset;
+
+        window.scrollTo({ top, behavior: 'smooth' });
+    };
+
+    const openModal = () => {
+        if (!modal) return;
+        closeMenu();
+        modal.classList.add('show');
+        modal.setAttribute('aria-hidden', 'false');
+        setBodyLock(true);
+        document.getElementById('booking-name')?.focus();
+    };
+
+    const closeModal = () => {
+        if (!modal || !bookingForm) return;
+        modal.classList.remove('show');
+        modal.setAttribute('aria-hidden', 'true');
+        bookingForm.reset();
+        phoneInput?.parentElement?.classList.remove('invalid');
+        setBodyLock(navMenu?.classList.contains('active') || false);
+    };
+
+    const formatPhone = (value) => {
+        let digits = value.replace(/\D/g, '');
+
+        if (digits.startsWith('38')) digits = digits.slice(2);
+        if (digits.startsWith('0')) digits = digits.slice(1);
+
+        digits = digits.slice(0, 9);
+
+        const code = digits.slice(0, 2);
+        const first = digits.slice(2, 5);
+        const second = digits.slice(5, 7);
+        const third = digits.slice(7, 9);
+
+        let result = '+38 (0' + code;
+        if (digits.length > 2) result += ') ' + first;
+        if (digits.length > 5) result += '-' + second;
+        if (digits.length > 7) result += '-' + third;
+
+        return result;
+    };
+
+    const isValidPhone = (value) => /^\+38 \(0\d{2}\) \d{3}-\d{2}-\d{2}$/.test(value);
+
+    updateHeader();
+    window.addEventListener('scroll', updateHeader, { passive: true });
+    mobileMenuBtn?.addEventListener('click', toggleMenu);
+
+    navLinks.forEach((link) => {
+        link.addEventListener('click', (event) => {
+            const targetId = link.getAttribute('href');
+            if (!targetId || !targetId.startsWith('#') || targetId === '#') return;
+
+            event.preventDefault();
+            closeMenu();
+            scrollToSection(targetId);
         });
     });
 
-    phoneInput.addEventListener('focus', function () {
-        if (this.value === "") {
-            this.value = "+38 (0";
-        }
+    document.querySelector('.hero-btn')?.addEventListener('click', (event) => {
+        event.preventDefault();
+        scrollToSection('#coffee');
     });
 
-    bookingForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        if (phoneInput.value.length < 19) {
-            phoneGroup.classList.add('invalid');
-            phoneInput.focus();
-        } else {
-            phoneGroup.classList.remove('invalid');
-            alert(`Дякуємо, ${document.getElementById('booking-name').value}! Ваш столик успішно заброньовано. Очікуйте на дзвінок.`);
-            closeModal();
+    tabButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+            const targetCategory = button.dataset.target;
+
+            tabButtons.forEach((btn) => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            menuItems.forEach((item) => {
+                const shouldShow = targetCategory === 'all' || item.dataset.category === targetCategory;
+                item.classList.toggle('hidden', !shouldShow);
+            });
+        });
+    });
+
+    const sections = document.querySelectorAll('section');
+    sections.forEach((section, index) => {
+        if (index > 0) section.classList.add('fade-in-section');
+    });
+
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries, currentObserver) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('is-visible');
+                currentObserver.unobserve(entry.target);
+            });
+        }, { threshold: 0.12 });
+
+        document.querySelectorAll('.fade-in-section').forEach((section) => observer.observe(section));
+    } else {
+        document.querySelectorAll('.fade-in-section').forEach((section) => section.classList.add('is-visible'));
+    }
+
+    openModalBtns.forEach((button) => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            openModal();
+        });
+    });
+
+    closeModalBtn?.addEventListener('click', closeModal);
+
+    modal?.addEventListener('click', (event) => {
+        if (event.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && modal?.classList.contains('show')) closeModal();
+    });
+
+    if (dateInput) {
+        dateInput.min = new Date().toISOString().split('T')[0];
+    }
+
+    phoneInput?.addEventListener('focus', () => {
+        if (!phoneInput.value) phoneInput.value = '+38 (0';
+    });
+
+    phoneInput?.addEventListener('input', () => {
+        phoneInput.value = formatPhone(phoneInput.value);
+        phoneInput.parentElement?.classList.toggle('invalid', phoneInput.value.length > 0 && !isValidPhone(phoneInput.value));
+    });
+
+    bookingForm?.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        if (!bookingForm.reportValidity()) return;
+
+        const phoneGroup = phoneInput?.parentElement;
+        if (!phoneInput || !isValidPhone(phoneInput.value)) {
+            phoneGroup?.classList.add('invalid');
+            phoneInput?.focus();
+            return;
         }
+
+        phoneGroup?.classList.remove('invalid');
+        const name = document.getElementById('booking-name')?.value.trim() || 'гостю';
+        alert(`Дякуємо, ${name}! Ваш столик успішно заброньовано. Очікуйте на дзвінок.`);
+        closeModal();
     });
 });
